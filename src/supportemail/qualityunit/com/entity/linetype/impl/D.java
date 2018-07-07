@@ -14,4 +14,15 @@ public class D extends LineType {
         super(service, questionType, responseType);
         this.datePeriod = datePeriod;
     }
+
+    public D() {
+    }
+
+    public DatePeriod getDatePeriod() {
+        return datePeriod;
+    }
+
+    public void setDatePeriod(DatePeriod datePeriod) {
+        this.datePeriod = datePeriod;
+    }
 }

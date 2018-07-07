@@ -16,4 +16,39 @@ public abstract class LineType {
         this.responseType = responseType;
     }
 
+    public LineType() {
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(QuestionType questionType) {
+        this.questionType = questionType;
+    }
+
+    public ResponseType getResponseType() {
+        return responseType;
+    }
+
+    public void setResponseType(ResponseType responseType) {
+        this.responseType = responseType;
+    }
+
+    @Override
+    public String toString() {
+        return "LineType{" +
+                "service=" + service +
+                ", questionType=" + questionType +
+                ", responseType=" + responseType +
+                '}';
+    }
 }

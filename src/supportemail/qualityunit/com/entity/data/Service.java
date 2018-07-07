@@ -3,22 +3,22 @@ package supportemail.qualityunit.com.entity.data;
 public class Service {
 
     private int id;
-    private Variant variant;
+    private Variant variation;
 
-    public Service(int id, Variant variant) {
+    public Service(int id, Variant variation) {
         this.id = id;
-        this.variant = variant;
+        this.variation = variation;
     }
 
-    public Variant getVariant() {
-        return variant;
+    public Variant getVariation() {
+        return variation;
     }
 
-    public void setVariant(Variant variant) {
-        this.variant = variant;
+    public void setVariation(Variant variation) {
+        this.variation = variation;
     }
 
-    private static class Variant {
+    public static class Variant {
 
         private int id;
 
@@ -34,6 +34,19 @@ public class Service {
             this.id = id;
         }
 
+        @Override
+        public String toString() {
+            return "Variant{" +
+                    "id=" + id +
+                    '}';
+        }
     }
 
+    @Override
+    public String toString() {
+        return "Service{" +
+                "id=" + id +
+                ", variation=" + variation +
+                '}';
+    }
 }

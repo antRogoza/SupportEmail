@@ -2,19 +2,23 @@ package supportemail.qualityunit.com.entity.data;
 
 public class QuestionType {
 
-    private int id;
+    private String id;
     private Category category;
 
-    public QuestionType(int id, Category category) {
+    public QuestionType(String id, Category category) {
         this.id = id;
         this.category = category;
     }
 
-    public int getId() {
+    public QuestionType(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -34,21 +38,21 @@ public class QuestionType {
         this.category = category;
     }
 
-    public class Category {
+    public static class Category {
 
-        private int id;
+        private String id;
         private SubCategory subCategory;
 
-        public Category(int id, SubCategory subCategory) {
+        public Category(String id, SubCategory subCategory) {
             this.id = id;
             this.subCategory = subCategory;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -68,19 +72,19 @@ public class QuestionType {
                     '}';
         }
 
-        private class SubCategory {
+        public static class SubCategory {
 
-            private int id;
+            private String id;
 
-            public SubCategory(int id) {
+            public SubCategory(String id) {
                 this.id = id;
             }
 
-            public int getId() {
+            public String getId() {
                 return id;
             }
 
-            public void setId(int id) {
+            public void setId(String id) {
                 this.id = id;
             }
 

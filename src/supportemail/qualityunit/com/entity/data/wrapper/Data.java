@@ -3,18 +3,21 @@ package supportemail.qualityunit.com.entity.data.wrapper;
 import supportemail.qualityunit.com.entity.linetype.impl.C;
 import supportemail.qualityunit.com.entity.linetype.impl.D;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Data {
 
     private int linesCount;
-    private List<C> C;
-    private List<D> D;
+    private Map<D, List<C>> queriesAndItsWaitingTimeLines;
 
-    public Data(int linesCount, List<C> c, List<D> d) {
+    public Data(int linesCount, Map<D, List<C>> queriesAndItsWaitingTimeLines) {
         this.linesCount = linesCount;
-        C = c;
-        D = d;
+        this.queriesAndItsWaitingTimeLines = queriesAndItsWaitingTimeLines;
+    }
+
+    public Data() {
     }
 
     public int getLinesCount() {
@@ -25,28 +28,23 @@ public class Data {
         this.linesCount = linesCount;
     }
 
-    public List<C> getC() {
-        return C;
+    public Map<D, List<C>> getQueriesAndItsWaitingTimeLines() {
+        return queriesAndItsWaitingTimeLines;
     }
 
-    public void setC(List<C> c) {
-        C = c;
-    }
-
-    public List<D> getD() {
-        return D;
-    }
-
-    public void setD(List<D> d) {
-        D = d;
+    public void setQueriesAndItsWaitingTimeLines(Map<D, List<C>> queriesAndItsWaitingTimeLines) {
+        this.queriesAndItsWaitingTimeLines = queriesAndItsWaitingTimeLines;
     }
 
     @Override
     public String toString() {
+        for (Map.Entry entry : queriesAndItsWaitingTimeLines.entrySet()) {
+//            List value = (List) entry.getValue();
+            System.out.println(entry.getKey() + "   " + entry.getValue());
+        }
         return "Data{" +
                 "linesCount=" + linesCount +
-                ", C=" + C +
-                ", D=" + D +
+                ", queriesAndItsWaitingTimeLines=" + queriesAndItsWaitingTimeLines +
                 '}';
     }
 
