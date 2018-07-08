@@ -1,9 +1,9 @@
 package supportemail.qualityunit.com.entity.linetype.impl;
 
-import supportemail.qualityunit.com.entity.data.ResponseType;
-import supportemail.qualityunit.com.entity.linetype.LineType;
 import supportemail.qualityunit.com.entity.data.QuestionType;
+import supportemail.qualityunit.com.entity.data.ResponseType;
 import supportemail.qualityunit.com.entity.data.Service;
+import supportemail.qualityunit.com.entity.linetype.LineType;
 
 import java.util.Date;
 

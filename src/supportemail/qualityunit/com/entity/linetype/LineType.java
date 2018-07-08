@@ -1,7 +1,7 @@
 package supportemail.qualityunit.com.entity.linetype;
 
-import supportemail.qualityunit.com.entity.data.ResponseType;
 import supportemail.qualityunit.com.entity.data.QuestionType;
+import supportemail.qualityunit.com.entity.data.ResponseType;
 import supportemail.qualityunit.com.entity.data.Service;
 
 public abstract class LineType {

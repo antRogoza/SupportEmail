@@ -29,8 +29,8 @@ public class DatePeriod {
         this.toDate = toDate;
     }
 
-    public boolean consistsInPeriod(Date date){
-        if((date.after(fromDate) && date.before(toDate)) || date.equals(fromDate)) {
+    public boolean consistsInPeriod(Date date) {
+        if ((date.after(fromDate) && date.before(toDate)) || date.equals(fromDate)) {
             return true;
         }
         return false;

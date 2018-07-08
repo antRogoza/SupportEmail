@@ -5,7 +5,11 @@ import supportemail.qualityunit.com.entity.data.wrapper.Data;
 import supportemail.qualityunit.com.entity.linetype.LineType;
 import supportemail.qualityunit.com.entity.linetype.impl.C;
 import supportemail.qualityunit.com.entity.linetype.impl.D;
+import supportemail.qualityunit.com.exception.InvalidValidationDataInFile;
+import supportemail.qualityunit.com.util.constant.Constants;
 import supportemail.qualityunit.com.util.reader.Reader;
+import supportemail.qualityunit.com.util.validation.Validation;
+import supportemail.qualityunit.com.util.writer.Writer;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -33,38 +37,70 @@ public class Parser {
             String line;
             LineType lineType;
             while ((line = reader.readLine()) != null) {
-                if (line.matches("\\d{1,6}")) {
+                if (line.matches(Validation.WAITING_TIME_REGEX)) {
                     continue;
                 }
-                String[] lineContains = line.split(" ");
-                    Service service = parseServiceAndVariation(lineContains[1]);
-                    QuestionType questionType = parseQuestionTypeAndCategoryAndSubcategory(lineContains[2]);
-                    ResponseType responseType = parseResponseType(lineContains[3]);
-                    if (LineTypeEnum.valueOf(lineContains[0]) == LineTypeEnum.C) {
-                        C c = new C();
-                        c.setService(service);
-                        c.setQuestionType(questionType);
-                        c.setResponseType(responseType);
-                        c.setDate(parseDate(lineContains[4]));
-                        c.setWaitingTime(parseWaitingTime(lineContains[5]));
-                        waitingTimeLines.add(c);
-                    } else if (LineTypeEnum.valueOf(lineContains[0]) == LineTypeEnum.D) {
-                        D d = new D();
-                        d.setService(service);
-                        d.setQuestionType(questionType);
-                        d.setResponseType(responseType);
-                        d.setDatePeriod(parseDatePeriod(lineContains[4]));
-                        queriesAndItsWaitingTimeLines.put(d, new ArrayList(waitingTimeLines));
-                    }
-//                }
+                String[] lineContains = line.split(Validation.LINE_SPLITER);
+                if (LineTypeEnum.valueOf(lineContains[0]) == LineTypeEnum.C) {
+                    C c = new C();
+                    c.setService(checkValidationService(lineContains[1]));
+                    c.setQuestionType(checkValidationQuestionType(lineContains[2]));
+                    c.setResponseType(checkValidationResponseType(lineContains[3]));
+                    c.setDate(parseDate(lineContains[4]));
+                    c.setWaitingTime(parseWaitingTime(lineContains[5]));
+                    waitingTimeLines.add(c);
+                } else if (LineTypeEnum.valueOf(lineContains[0]) == LineTypeEnum.D) {
+                    D d = new D();
+                    d.setService(checkValidationService(lineContains[1]));
+                    d.setQuestionType(checkValidationQuestionType(lineContains[2]));
+                    d.setResponseType(checkValidationResponseType(lineContains[3]));
+                    d.setDatePeriod(parseDatePeriod(lineContains[4]));
+                    queriesAndItsWaitingTimeLines.put(d, new ArrayList(waitingTimeLines));
+                }
             }
         }
         data.setQueriesAndItsWaitingTimeLines(queriesAndItsWaitingTimeLines);
         return data;
     }
 
+    private Service checkValidationService(String serviceQuery){
+        Service service = null;
+        try {
+            if(Validation.validationService(serviceQuery)) {
+                service = parseServiceAndVariation(serviceQuery);
+            }
+        } catch (InvalidValidationDataInFile ex) {
+            Writer.writeEx(ex.getMessage());
+        }
+        return service;
+    }
+
+    private QuestionType checkValidationQuestionType(String questionTypeQuery){
+        QuestionType questionType = null;
+        try {
+            if(Validation.validationQuestionType(questionTypeQuery)) {
+                questionType = parseQuestionTypeAndCategoryAndSubcategory(questionTypeQuery);
+            }
+        } catch (InvalidValidationDataInFile ex) {
+            Writer.writeEx(ex.getMessage());
+        }
+        return questionType;
+    }
+
+    private ResponseType checkValidationResponseType(String responseTypeQuery){
+        ResponseType responseType = null;
+        try {
+            if(Validation.validationResponseType(responseTypeQuery)) {
+                responseType = parseResponseType(responseTypeQuery);
+            }
+        } catch (InvalidValidationDataInFile ex) {
+            Writer.writeEx(ex.getMessage());
+        }
+        return responseType;
+    }
+
     private DatePeriod parseDatePeriod(String datePeriodString) throws ParseException {
-        String[] datePeriods = datePeriodString.split("\\-");
+        String[] datePeriods = datePeriodString.split(Validation.DATE_SPLITER);
         String dateFrom;
         String dateTo;
         DatePeriod datePeriod;
@@ -84,7 +120,7 @@ public class Parser {
     }
 
     private Date parseDate(String date) throws ParseException {
-        return new SimpleDateFormat("dd.MM.yyyy").parse(date);
+        return new SimpleDateFormat(Validation.DATE_REGEX).parse(date);
     }
 
     private ResponseType parseResponseType(String responseType) {
@@ -92,8 +128,7 @@ public class Parser {
     }
 
     private Service parseServiceAndVariation(String lineContain) {
-//        System.out.println(lineContain);
-        String[] serviceContains = lineContain.split("\\.");
+        String[] serviceContains = lineContain.split(Validation.NUMBER_SPLITER);
         Service service;
         String serviceId = serviceContains[0];
         if (serviceHasVariation(serviceContains)) {
@@ -105,7 +140,7 @@ public class Parser {
     }
 
     private QuestionType parseQuestionTypeAndCategoryAndSubcategory(String lineContain) {
-        String[] questionTypeContains = lineContain.split("\\.");
+        String[] questionTypeContains = lineContain.split(Validation.NUMBER_SPLITER);
         QuestionType questionType;
         String questionTypeId = parseQuestionTypeId(questionTypeContains[0]);
         if (categoryHasSubCategory(questionTypeContains)) {
@@ -123,7 +158,7 @@ public class Parser {
     }
 
     private boolean questionTypeHasCategory(String[] questionTypeContains) {
-        return questionTypeContains.length == 2;
+        return questionTypeContains.length == Constants.NUMBER_OF_ELEMENTS_IN_SIMPLE_QUERY;
     }
 
     private QuestionType.Category.SubCategory createSubCategory(String subCategoryId) {
@@ -139,19 +174,16 @@ public class Parser {
     }
 
     private boolean categoryHasSubCategory(String[] questionTypeContains) {
-        return questionTypeContains.length > 2;
+        return questionTypeContains.length > Constants.NUMBER_OF_ELEMENTS_IN_SIMPLE_QUERY;
     }
 
     private boolean serviceHasVariation(String[] serviceContains) {
-        return serviceContains.length == 2;
+        return serviceContains.length == Constants.NUMBER_OF_ELEMENTS_IN_SIMPLE_QUERY;
     }
 
     private Service.Variant createVariation(String variationId) {
         return new Service.Variant(variationId);
     }
 
-    private int parseServiceId(String serviceId) {
-        return Integer.parseInt(serviceId);
-    }
 
 }

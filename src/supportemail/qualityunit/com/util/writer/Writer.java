@@ -6,4 +6,6 @@ public class Writer {
         System.out.println(message);
     }
 
+    public static void writeEx(String message) { System.err.println(message);}
+
 }

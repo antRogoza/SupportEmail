@@ -3,7 +3,6 @@ package supportemail.qualityunit.com.entity.data.wrapper;
 import supportemail.qualityunit.com.entity.linetype.impl.C;
 import supportemail.qualityunit.com.entity.linetype.impl.D;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
