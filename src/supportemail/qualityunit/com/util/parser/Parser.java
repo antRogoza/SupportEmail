@@ -27,7 +27,7 @@ public class Parser {
         int linesCount = -1;
         linesCount = reader.readLinesCount(pathToFile);
         data.setLinesCount(linesCount);
-        Map<D, List<C>> queriesAndItsWaitingTimeLines = new HashMap<>();
+        Map<D, List<C>> queriesAndItsWaitingTimeLines = new LinkedHashMap<>();
         List<C> waitingTimeLines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(pathToFile))) {
             String line;
@@ -37,9 +37,6 @@ public class Parser {
                     continue;
                 }
                 String[] lineContains = line.split(" ");
-
-
-//                for (int i = 0; i < lineContains.length; i++) {
                     Service service = parseServiceAndVariation(lineContains[1]);
                     QuestionType questionType = parseQuestionTypeAndCategoryAndSubcategory(lineContains[2]);
                     ResponseType responseType = parseResponseType(lineContains[3]);
@@ -57,7 +54,7 @@ public class Parser {
                         d.setQuestionType(questionType);
                         d.setResponseType(responseType);
                         d.setDatePeriod(parseDatePeriod(lineContains[4]));
-                        queriesAndItsWaitingTimeLines.put(d, waitingTimeLines);
+                        queriesAndItsWaitingTimeLines.put(d, new ArrayList(waitingTimeLines));
                     }
 //                }
             }
@@ -98,7 +95,7 @@ public class Parser {
 //        System.out.println(lineContain);
         String[] serviceContains = lineContain.split("\\.");
         Service service;
-        int serviceId = parseServiceId(serviceContains[0]);
+        String serviceId = serviceContains[0];
         if (serviceHasVariation(serviceContains)) {
             service = new Service(serviceId, createVariation(serviceContains[1]));
         } else {
@@ -150,7 +147,7 @@ public class Parser {
     }
 
     private Service.Variant createVariation(String variationId) {
-        return new Service.Variant(Integer.parseInt(variationId));
+        return new Service.Variant(variationId);
     }
 
     private int parseServiceId(String serviceId) {

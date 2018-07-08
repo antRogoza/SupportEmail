@@ -20,7 +20,6 @@ public class ContextInitializer {
         Main main = new Main(parser, reader);
         main.process();
 
-
     }
 
 }

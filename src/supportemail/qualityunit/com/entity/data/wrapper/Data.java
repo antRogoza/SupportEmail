@@ -6,6 +6,7 @@ import supportemail.qualityunit.com.entity.linetype.impl.D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Data {
 
@@ -48,4 +49,18 @@ public class Data {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Data data = (Data) o;
+        return linesCount == data.linesCount &&
+                Objects.equals(queriesAndItsWaitingTimeLines, data.queriesAndItsWaitingTimeLines);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(linesCount, queriesAndItsWaitingTimeLines);
+    }
 }

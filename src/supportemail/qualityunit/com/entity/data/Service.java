@@ -1,13 +1,23 @@
 package supportemail.qualityunit.com.entity.data;
 
+import java.util.Objects;
+
 public class Service {
 
-    private int id;
+    private String id;
     private Variant variation;
 
-    public Service(int id, Variant variation) {
+    public Service(String id, Variant variation) {
         this.id = id;
         this.variation = variation;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Variant getVariation() {
@@ -20,17 +30,17 @@ public class Service {
 
     public static class Variant {
 
-        private int id;
+        private String id;
 
-        public Variant(int id) {
+        public Variant(String id) {
             this.id = id;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 
@@ -40,6 +50,7 @@ public class Service {
                     "id=" + id +
                     '}';
         }
+
     }
 
     @Override
@@ -48,5 +59,19 @@ public class Service {
                 "id=" + id +
                 ", variation=" + variation +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Service)) return false;
+        Service service = (Service) o;
+        return Objects.equals(getId(), service.getId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId());
     }
 }

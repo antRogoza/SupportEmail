@@ -1,5 +1,7 @@
 package supportemail.qualityunit.com.entity.data;
 
+import java.util.Objects;
+
 public class QuestionType {
 
     private String id;
@@ -99,4 +101,17 @@ public class QuestionType {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof QuestionType)) return false;
+        QuestionType that = (QuestionType) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId());
+    }
 }
